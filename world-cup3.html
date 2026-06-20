@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>World Cup 2026 v3</title>
+    <link rel="stylesheet" href="">
+    <script src="" defer></script>
+
+    <style>
+
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+        background-color: #873d3d;
+        margin: 0;
+      }
+
+      .header-container {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      }
+      
+      button:hover {
+        background-color: #0056b3;
+      }
+      
+      #dashboard {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .group-section {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+      
+      .group-title {
+        margin-top: 0;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 5px;
+        color: #333;
+      }
+      
+      .group-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+      
+      .matches-subcontainer {
+        flex: 1;
+        min-width: 300px;
+      }
+      
+      .match-row {
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      
+      .match-row:last-child {
+        border-bottom: none;
+      }
+      
+      input[type="number"] {
+        width: 30px;
+        text-align: center;
+        padding: 4px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+      }
+
+      .table-subcontainer {
+        flex: 1;
+        min-width: 300px;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        background: white;
+      }
+
+      th, td {
+        border: 1px solid #e0e0e0;
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #f8f9fa;
+        color: #555;
+      }
+
+      td:first-child {
+        text-align: left;
+        font-weight: bold;
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="header-container">
+      <h1>World Cup 2026</h1>
+      <button id="calculateTablesButton">Save scores and calculate tables</button>
+      <button id="resetDataButton">Reset data</button>
+    </div>
+
+    <div id="dashboard"></div>
+
+
+    <!--
+    <div id="matches"></div>
+    <div id="tables"></div>
+  -->
+    
+
+  <script>
+
+    
+    
+
+    const groups = {
+      A: [
+        { teamName: "Mexico", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "South Africa", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Czech Republic", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "South Korea", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      B: [
+        { teamName: "Canada", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Bosnia and Herzegovina", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Qatar", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Switzerland", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      C: [
+        { teamName: "Scotland", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Morocco", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Brazil", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Haiti", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      D: [
+        { teamName: "USA", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Australia", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Turkey", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Paraguay", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      E: [
+        { teamName: "Germany", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Ivory Coast", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Ecuador", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Curacao", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      F: [
+        { teamName: "Sweden", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Japan", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Netherlands", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Tunisia", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      G: [
+        { teamName: "New Zealand", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Iran", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Belgium", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Egypt", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      H: [
+        { teamName: "Uruguay", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Saudi Arabia", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Spain", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Cape Verde", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      I: [
+        { teamName: "Norway", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "France", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Senegal", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Iraq", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      J: [
+        { teamName: "Argentina", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Austria", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Jordan", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Algeria", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      K: [
+        { teamName: "Portugal", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "DR Congo", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Uzbekistan", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Colombia", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ],
+      L: [
+        { teamName: "England", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Croatia", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Ghana", points: 0, goalsFor: 0, goalsAgainst: 0 },
+        { teamName: "Panama", points: 0, goalsFor: 0, goalsAgainst: 0 }
+      ]
+    };
+    
+    let matches = [
+      {
+        matchId: 1,
+        group: "A",
+        homeTeamName: "Mexico",
+        awayTeamName: "South Africa",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 2,
+        group: "A",
+        homeTeamName: "South Korea",
+        awayTeamName: "Czech Republic",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 3,
+        group: "B",
+        homeTeamName: "Canada",
+        awayTeamName: "Bosnia and Herzegovina",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 4,
+        group: "D",
+        homeTeamName: "USA",
+        awayTeamName: "Paraguay",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 5,
+        group: "B",
+        homeTeamName: "Qatar",
+        awayTeamName: "Switzerland",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 6,
+        group: "C",
+        homeTeamName: "Brazil",
+        awayTeamName: "Morocco",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 7,
+        group: "C",
+        homeTeamName: "Haiti",
+        awayTeamName: "Scotland",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 8,
+        group: "D",
+        homeTeamName: "Australia",
+        awayTeamName: "Turkey",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 9,
+        group: "E",
+        homeTeamName: "Germany",
+        awayTeamName: "Curacao",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 10,
+        group: "F",
+        homeTeamName: "Netherlands",
+        awayTeamName: "Japan",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 11,
+        group: "E",
+        homeTeamName: "Ivory Coast",
+        awayTeamName: "Ecuador",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 12,
+        group: "F",
+        homeTeamName: "Sweden",
+        awayTeamName: "Tunisia",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 13,
+        group: "H",
+        homeTeamName: "Spain",
+        awayTeamName: "Cape Verde",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 14,
+        group: "G",
+        homeTeamName: "Belgium",
+        awayTeamName: "Egypt",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 15,
+        group: "H",
+        homeTeamName: "Saudi Arabia",
+        awayTeamName: "Uruguay",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 16,
+        group: "G",
+        homeTeamName: "Iran",
+        awayTeamName: "New Zealand",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 17,
+        group: "I",
+        homeTeamName: "France",
+        awayTeamName: "Senegal",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 18,
+        group: "I",
+        homeTeamName: "Iraq",
+        awayTeamName: "Norway",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 19,
+        group: "J",
+        homeTeamName: "Argentina",
+        awayTeamName: "Algeria",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 20,
+        group: "J",
+        homeTeamName: "Austria",
+        awayTeamName: "Jordan",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 21,
+        group: "K",
+        homeTeamName: "Portugal",
+        awayTeamName: "DR Congo",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 22,
+        group: "L",
+        homeTeamName: "England",
+        awayTeamName: "Croatia",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 23,
+        group: "L",
+        homeTeamName: "Ghana",
+        awayTeamName: "Panama",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 24,
+        group: "K",
+        homeTeamName: "Uzbekistan",
+        awayTeamName: "Colombia",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 25,
+        group: "A",
+        homeTeamName: "Czech Republic",
+        awayTeamName: "South Africa",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 26,
+        group: "B",
+        homeTeamName: "Switzerland",
+        awayTeamName: "Bosnia and Herzegovina",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 27,
+        group: "B",
+        homeTeamName: "Canada",
+        awayTeamName: "Qatar",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 28,
+        group: "A",
+        homeTeamName: "Mexico",
+        awayTeamName: "South Korea",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 29,
+        group: "D",
+        homeTeamName: "USA",
+        awayTeamName: "Australia",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 30,
+        group: "C",
+        homeTeamName: "Scotland",
+        awayTeamName: "Morocco",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 31,
+        group: "C",
+        homeTeamName: "Brazil",
+        awayTeamName: "Haiti",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 32,
+        group: "D",
+        homeTeamName: "Turkey",
+        awayTeamName: "Paraguay",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 33,
+        group: "F",
+        homeTeamName: "Netherlands",
+        awayTeamName: "Sweden",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 34,
+        group: "E",
+        homeTeamName: "Germany",
+        awayTeamName: "Ivory Coast",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 35,
+        group: "E",
+        homeTeamName: "Ecuador",
+        awayTeamName: "Curacao",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 36,
+        group: "F",
+        homeTeamName: "Tunisia",
+        awayTeamName: "Japan",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 37,
+        group: "H",
+        homeTeamName: "Spain",
+        awayTeamName: "Saudi Arabia",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 38,
+        group: "G",
+        homeTeamName: "Belgium",
+        awayTeamName: "Iran",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 39,
+        group: "H",
+        homeTeamName: "Uruguay",
+        awayTeamName: "Cape Verde",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 40,
+        group: "G",
+        homeTeamName: "New Zealand",
+        awayTeamName: "Egypt",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 41,
+        group: "J",
+        homeTeamName: "Argentina",
+        awayTeamName: "Austria",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 42,
+        group: "I",
+        homeTeamName: "France",
+        awayTeamName: "Iraq",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 43,
+        group: "I",
+        homeTeamName: "Norway",
+        awayTeamName: "Senegal",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 44,
+        group: "J",
+        homeTeamName: "Jordan",
+        awayTeamName: "Algeria",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 45,
+        group: "K",
+        homeTeamName: "Portugal",
+        awayTeamName: "Uzbekistan",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 46,
+        group: "L",
+        homeTeamName: "England",
+        awayTeamName: "Ghana",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 47,
+        group: "L",
+        homeTeamName: "Panama",
+        awayTeamName: "Croatia",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 48,
+        group: "K",
+        homeTeamName: "Colombia",
+        awayTeamName: "DR Congo",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 49,
+        group: "B",
+        homeTeamName: "Switzerland",
+        awayTeamName: "Canada",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 50,
+        group: "B",
+        homeTeamName: "Bosnia and Herzegovina",
+        awayTeamName: "Qatar",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 51,
+        group: "C",
+        homeTeamName: "Scotland",
+        awayTeamName: "Brazil",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 52,
+        group: "C",
+        homeTeamName: "Morocco",
+        awayTeamName: "Haiti",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 53,
+        group: "A",
+        homeTeamName: "Czech Republic",
+        awayTeamName: "Mexico",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 54,
+        group: "A",
+        homeTeamName: "South Africa",
+        awayTeamName: "South Korea",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 55,
+        group: "E",
+        homeTeamName: "Curacao",
+        awayTeamName: "Ivory Coast",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 56,
+        group: "E",
+        homeTeamName: "Ecuador",
+        awayTeamName: "Germany",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 57,
+        group: "F",
+        homeTeamName: "Japan",
+        awayTeamName: "Sweden",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 58,
+        group: "F",
+        homeTeamName: "Tunisia",
+        awayTeamName: "Netherlands",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 59,
+        group: "D",
+        homeTeamName: "Turkey",
+        awayTeamName: "USA",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 60,
+        group: "D",
+        homeTeamName: "Paraguay",
+        awayTeamName: "Australia",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 61,
+        group: "I",
+        homeTeamName: "Norway",
+        awayTeamName: "France",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 62,
+        group: "I",
+        homeTeamName: "Senegal",
+        awayTeamName: "Iraq",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 63,
+        group: "H",
+        homeTeamName: "Cape Verde",
+        awayTeamName: "Saudi Arabia",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 64,
+        group: "H",
+        homeTeamName: "Uruguay",
+        awayTeamName: "Spain",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 65,
+        group: "G",
+        homeTeamName: "Egypt",
+        awayTeamName: "Iran",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 66,
+        group: "G",
+        homeTeamName: "New Zealand",
+        awayTeamName: "Belgium",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 67,
+        group: "L",
+        homeTeamName: "Panama",
+        awayTeamName: "England",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 68,
+        group: "L",
+        homeTeamName: "Croatia",
+        awayTeamName: "Ghana",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 69,
+        group: "K",
+        homeTeamName: "Colombia",
+        awayTeamName: "Portugal",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 70,
+        group: "K",
+        homeTeamName: "DR Congo",
+        awayTeamName: "Uzbekistan",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 71,
+        group: "J",
+        homeTeamName: "Algeria",
+        awayTeamName: "Austria",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      },
+      {
+        matchId: 72,
+        group: "J",
+        homeTeamName: "Jordan",
+        awayTeamName: "Argentina",
+        homeTeamGoals: null,
+        awayTeamGoals: null
+      }
+    ]
+  
+  const savedMatches = JSON.parse(localStorage.getItem('localStorageSavedMatches')); //Taking out from memory in localStorage as localStorageSavedMatches and saving to variable savedMatches with changing back string to JS object form (JSON.parse)
+
+if (savedMatches) {
+      matches = savedMatches;
+    };  // loading localStorage variable savedMatches to array matches if localStorage memory exists
+
+
+
+  let dashboardHTML = '';
+
+  matches.forEach((match) => {
+    const homeTeamGoalsValue = match.homeTeamGoals !== null ? match.homeTeamGoals : ""; //condition for filling homeTeamGoals from localStorage or not
+    const awayTeamGoalsValue = match.awayTeamGoals !== null ? match.awayTeamGoals : ""; //condition for filling awayTeamGoals from localStorage or not
+
+    //below in value is localStorage 
+    dashboardHTML = dashboardHTML + `
+    <div style="padding-bottom: 25px;">
+    ${match.matchId}.${match.group}. ${match.homeTeamName}
+    <input type="number" class="js-homeTeamGoals" value="${homeTeamGoalsValue}" min="0" width: 40px>
+    :
+    <input type="number" input class="js-awayTeamGoals" value="${awayTeamGoalsValue}" min="0">
+    ${match.awayTeamName}
+  </div>
+    `;
+
+  });
+document.querySelector('#dashboard').innerHTML = dashboardHTML;
+
+function updateMatches() {
+  
+  matches.forEach(function (elementInMatches) {
+
+    const inputHomeTeamGoals = document.querySelector(`.js-homeTeamGoals[data-match-id="${elementInMatches.matchId}"]`);
+    const inputAwayTeamGoals = document.querySelector(`.js-awayTeamGoals[data-match-id="${elementInMatches.matchId}"]`);
+
+    if (!inputHomeTeamGoals || !inputAwayTeamGoals) return;
+
+    const homeTeamGoalsValue = inputHomeTeamGoals.value;
+    const awayTeamGoalsValue = inputAwayTeamGoals.value;
+
+    const homeTeamGoals = homeTeamGoalsValue !== "" ? Number(homeTeamGoalsValue) : null;
+    const awayTeamGoals = awayTeamGoalsValue !== "" ? Number(awayTeamGoalsValue) : null;
+
+/*
+const homeTeamGoals = homeTeamGoalsValue !== "" ? Number(homeTeamGoalsValue) : null;  
+//this is conditional operator (ternary operator), short form if else instruction. Same thing below with if else syntax
+
+      const homeTeamGoals;
+      if (homeTeamGoalsValue !== "") {
+              // if homeTeamGoalsValue IS NOT empty, then:
+        homeTeamGoals = Number(homeTeamGoalsValue);
+      } else {
+              // othervise:
+        homeTeamGoals = null;
+      }
+*/
+    elementInMatches.homeTeamGoals = homeTeamGoals;
+    elementInMatches.awayTeamGoals = awayTeamGoals;
+});
+  localStorage.setItem('localStorageSavedMatches', JSON.stringify(matches));  //as part of function update() save homeTeamGoals and awayTeamGoals in memory to localStorage as localStorageSavedMatches in string form (JSON.stringify)
+};
+
+
+const resetGroups = function() {
+  Object.keys(groups).forEach(function(groupLetter) {
+    groups[groupLetter].forEach(function(teamInGroup) {
+  
+    teamInGroup.points = 0;
+    teamInGroup.goalsFor = 0;
+    teamInGroup.goalsAgainst = 0;
+    });
+  });
+};
+
+const calculateGroups = function() {
+
+  matches.forEach(function(elementInMatches) {
+    if (elementInMatches.homeTeamGoals === null || elementInMatches.awayTeamGoals === null) {
+      return; //return is like: if condition is true, pass this element in array and go to next element in loop
+    }
+    const group = groups[elementInMatches.group];
+
+    const homeTeam = group.find(function(elementInGroup) {
+      return elementInGroup.teamName === elementInMatches.homeTeamName;
+    });
+    const awayTeam = group.find(function(elementInGroup) {
+      return elementInGroup.teamName === elementInMatches.awayTeamName;
+    });
+    homeTeam.goalsFor = homeTeam.goalsFor + elementInMatches.homeTeamGoals;
+    homeTeam.goalsAgainst = homeTeam.goalsAgainst + elementInMatches.awayTeamGoals;
+    awayTeam.goalsFor = awayTeam.goalsFor + elementInMatches.awayTeamGoals; 
+    awayTeam.goalsAgainst = awayTeam.goalsAgainst + elementInMatches.homeTeamGoals;
+
+    if (elementInMatches.homeTeamGoals < elementInMatches.awayTeamGoals) {
+        awayTeam.points = awayTeam.points + 3;
+    } else if (elementInMatches.homeTeamGoals > elementInMatches.awayTeamGoals) {
+        homeTeam.points = homeTeam.points + 3;
+    } else {
+        homeTeam.points = homeTeam.points + 1;
+        awayTeam.points = awayTeam.points + 1;
+    }
+  });
+};
+
+const renderDashboard = function() {
+  let dashboardHTML = '';
+
+  Object.keys(groups).forEach(function(groupName) {
+    const group = groups[groupName];
+
+    group.sort(function (a, b) {
+      if (b.points !== a.points) {  //NOT SAME POINTS
+      return b.points - a.points;   //b-a DESCENDING SORTING, a-b ASCENDING SORTING
+      } else if ((b.goalsFor-b.goalsAgainst) !== (a.goalsFor-a.goalsAgainst)) { //NOT SAME GOALS DIFFERENCE
+      return (b.goalsFor-b.goalsAgainst) - (a.goalsFor-a.goalsAgainst); //DESCENDING SORTING GOALS DIFFERENCE IF POINTS SAME
+      } else 
+      return b.goalsFor - a.goalsFor; //DESCENDING SORTING ONLY GOALS FOR IF GOALS DIFFERENCE SAME
+  });
+
+  dashboardHTML = dashboardHTML + `<div class="group-section">`;
+  dashboardHTML = dashboardHTML + `<h2 class="group-title">Group ${groupName}</h2>`;
+  dashboardHTML = dashboardHTML + `<div class="group-content">`;
+
+  dashboardHTML = dashboardHTML + `<div class="matches-subcontainer"><h3>Matches</h3>`;
+
+    matches.forEach((match) => {
+        if (match.group !== groupName) return;
+    
+       const homeTeamGoalsValue = match.homeTeamGoals !== null ? match.homeTeamGoals : "";
+       const awayTeamGoalsValue = match.awayTeamGoals !== null ? match.awayTeamGoals : "";
+
+       dashboardHTML = dashboardHTML + `
+        <div class="match-row">
+          <span>${match.matchId}. ${match.homeTeamName}</span>
+          <input type="number" class="js-homeTeamGoals" data-match-id="${match.matchId}" min="0" value="${homeTeamGoalsValue}">
+          <span>:</span>
+          <input type="number" class="js-awayTeamGoals" data-match-id="${match.matchId}" min="0" value="${awayTeamGoalsValue}">
+          <span>${match.awayTeamName}</span>
+        </div>
+        `;
+  });
+      dashboardHTML = dashboardHTML + `</div>`;
+
+      dashboardHTML = dashboardHTML + `<div class="table-subcontainer"><h3>Table</h3>`;
+      dashboardHTML = dashboardHTML + `<table>
+        <tr>
+          <th>Team</th>
+          <th>Pts</th>
+          <th>GF</th>
+          <th>GA</th>
+        </tr>`;
+
+  
+        
+
+        group.forEach(function (team) {
+
+            dashboardHTML += `
+                <tr>
+                    <td>${team.teamName}</td>
+                    <td>${team.points}</td>
+                    <td>${team.goalsFor}</td>
+                    <td>${team.goalsAgainst}</td>
+                </tr>
+            `;
+
+        });
+
+        dashboardHTML += `</table></div>`;
+
+        dashboardHTML = dashboardHTML + `</div>`;
+        dashboardHTML = dashboardHTML + `</div>`;
+
+    });
+
+    document.querySelector("#dashboard").innerHTML = dashboardHTML;
+    
+};
+  function refreshTable() {
+    updateMatches();
+    resetGroups();
+    calculateGroups();
+    renderDashboard();
+}
+
+const calculateButton = document.querySelector("#calculateTablesButton");
+calculateButton.addEventListener('click', refreshTable);  //refreshTable function without () here
+
+const resetData = function() {
+  localStorage.clear();
+  matches.forEach(function(match) {
+    match.homeTeamGoals = null;
+    match.awayTeamGoals = null;
+  });
+  resetGroups();
+  calculateGroups();
+  renderDashboard();
+
+}
+const resetDataButton = document.querySelector("#resetDataButton");
+resetDataButton.addEventListener('click', resetData);
+
+
+</script>
+
+  </body>
+</html>
