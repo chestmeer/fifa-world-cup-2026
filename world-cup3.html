@@ -12,16 +12,24 @@
         font-family: sans-serif;
         padding: 20px;
         background-color: #873d3d;
-        margin: 0;
+        
+        margin-top: 120px;
       }
 
       .header-container {
+        position: fixed;
+        top: 0;
+        justify-self: center;
+        
+        gap: 10px;
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
       }
       
       button {
-        padding: 10px 20px;
+       
+        top: 0px;
+        padding: 10px 10px;
         font-size: 16px;
         font-weight: bold;
         cursor: pointer;
@@ -37,6 +45,7 @@
       }
       
       #dashboard {
+        
         display: flex;
         flex-direction: column;
         gap: 40px;
@@ -126,7 +135,9 @@
 
     <div class="header-container">
       <h1>World Cup 2026</h1>
+      
       <button id="calculateTablesButton">Save scores and calculate tables</button>
+      
       <button id="resetDataButton">Reset data</button>
     </div>
 
