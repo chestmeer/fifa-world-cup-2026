@@ -10,26 +10,43 @@
 
       body {
         font-family: sans-serif;
-        padding: 20px;
-        background-color: #873d3d;
         
-        margin-top: 120px;
+        background-color: #1e96ca;
+        margin: 0;
+        
       }
 
       .header-container {
-        position: fixed;
+        background-color: rgb(110, 132, 50);
+        position: sticky;
+ 
         top: 0;
-        justify-self: center;
-        
-        gap: 10px;
-        text-align: center;
+        box-sizing: border-box;
+        width: 100%;
         margin-bottom: 10px;
+                     
+        border-style: solid;
+        border-width: 1px;
+        border-color: yellow;
+
+        min-height: auto;
+                      
+        font-size: 10px;
+                  
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-wrap: wrap;
+                
       }
       
       button {
        
         top: 0px;
         padding: 10px 10px;
+        margin: 5px;
         font-size: 16px;
         font-weight: bold;
         cursor: pointer;
@@ -54,7 +71,7 @@
       }
       
       .group-section {
-        background: white;
+        background: rgb(162, 177, 124);
         border: 1px solid #e0e0e0;
         border-radius: 8px;
         padding: 20px;
@@ -67,6 +84,7 @@
         border-bottom: 2px solid #007bff;
         padding-bottom: 5px;
         color: #333;
+        
       }
       
       .group-content {
@@ -118,7 +136,7 @@
       }
 
       th {
-        background-color: #f8f9fa;
+        background-color: #b3caa8;
         color: #555;
       }
 
@@ -132,14 +150,15 @@
   </head>
 
   <body>
-
-    <div class="header-container">
-      <h1>World Cup 2026</h1>
-      
-      <button id="calculateTablesButton">Save scores and calculate tables</button>
-      
-      <button id="resetDataButton">Reset data</button>
-    </div>
+    <header class="header-container">
+      <div>
+        <h1>World Cup 2026</h1>
+        
+        <button id="calculateTablesButton">Save scores and calculate tables</button>
+        
+        <button id="resetDataButton">Reset data</button>
+      </div>
+    </header>
 
     <div id="dashboard"></div>
 
