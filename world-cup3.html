@@ -111,11 +111,23 @@
       }
       
       input[type="number"] {
-        width: 30px;
-        text-align: center;
+        width: 35px;
+        text-align: right;
         padding: 4px;
         border: 1px solid #ccc;
         border-radius: 20px;
+      }
+
+      .cssTeamName {
+        display: inline-block;
+        width: 95px;
+        padding-left: 5px;
+      }
+
+      .cssMatchId {
+        display: inline-block;
+        width: 20px;
+        text-align: right;
       }
 
       .table-subcontainer {
@@ -836,6 +848,9 @@ if (savedMatches) {
 
 
 
+
+  
+
   let dashboardHTML = '';
 
   matches.forEach((match) => {
@@ -854,7 +869,15 @@ if (savedMatches) {
     `;
 
   });
+  
 document.querySelector('#dashboard').innerHTML = dashboardHTML;
+
+function refreshTable() {
+    updateMatches();
+    resetGroups();
+    calculateGroups();
+    renderDashboard();
+}
 
 function updateMatches() {
   
@@ -918,6 +941,7 @@ const calculateGroups = function() {
     });
     homeTeam.goalsFor = homeTeam.goalsFor + elementInMatches.homeTeamGoals;
     homeTeam.goalsAgainst = homeTeam.goalsAgainst + elementInMatches.awayTeamGoals;
+    
     awayTeam.goalsFor = awayTeam.goalsFor + elementInMatches.awayTeamGoals; 
     awayTeam.goalsAgainst = awayTeam.goalsAgainst + elementInMatches.homeTeamGoals;
 
@@ -961,11 +985,11 @@ const renderDashboard = function() {
 
        dashboardHTML = dashboardHTML + `
         <div class="match-row">
-          <span>${match.matchId}. ${match.homeTeamName}</span>
+          <span class="cssMatchId">${match.matchId}.</span> <span class="cssTeamName"> ${match.homeTeamName}</span>
           <input type="number" class="js-homeTeamGoals" data-match-id="${match.matchId}" min="0" value="${homeTeamGoalsValue}">
           <span>:</span>
           <input type="number" class="js-awayTeamGoals" data-match-id="${match.matchId}" min="0" value="${awayTeamGoalsValue}">
-          <span>${match.awayTeamName}</span>
+          <span class="cssTeamName">${match.awayTeamName}</span>
         </div>
         `;
   });
@@ -1006,12 +1030,8 @@ const renderDashboard = function() {
     document.querySelector("#dashboard").innerHTML = dashboardHTML;
     
 };
-  function refreshTable() {
-    updateMatches();
-    resetGroups();
-    calculateGroups();
-    renderDashboard();
-}
+  
+refreshTable();
 
 const calculateButton = document.querySelector("#calculateTablesButton");
 calculateButton.addEventListener('click', refreshTable);  //refreshTable function without () here
